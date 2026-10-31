@@ -26,7 +26,7 @@
         <div class="pt-page pt-page-1">
             <header>
                 <!-- You have to replace the app logo or icon with your company or contest image -->
-                <img src="https://via.placeholder.com/258x67.png">
+                <img src="./img/logo.png">
                 <h2>Configuración</h2>
             </header>
             <h1>1. Configura el número de sorteos</h1>
@@ -54,7 +54,7 @@
             </div>
             <hr/>
             <div id="init" class="invisible">
-                <input id="initButton" type="button" class="btn btn-success" value="Iniciar">
+                <input id="initButton" type="button" class="btn btn-success" value="Iniciar" onclick="window.scrollTo(0,0)">
             </div>
         </div>
         
@@ -64,7 +64,7 @@
 
             <header>
                 <!-- You have to replace the app logo or icon with your company or contest image -->
-                <img src="https://via.placeholder.com/258x67.png">
+                <img src="./img/logo.png">
                 <h2>Roulette</h2>
             </header>
                     
@@ -83,7 +83,7 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <!-- You can add an advertising image for the contest -->
-                                    <img src="./img/publicidddad.png" alt="Imagen promocional"/>  
+                                <!--    <img src="./img/publicidddad.png" alt="Imagen promocional"/>  -->
                                 </div>
                             </div>   
                         </div>
@@ -118,7 +118,7 @@
             <!-- PAGE 3 - WINNERS -->
             <header>
                 <!-- You have to replace the app logo or icon with your company or contest image -->
-                <img src="https://via.placeholder.com/258x67.png">
+                <img src="./img/logo.png">
                 <h2>Listado de ganadores</h2>
             </header>
             <div id="winners">
@@ -285,10 +285,10 @@
 
             //Reset whell position
             function resetWhellPosition() {
-                wheel.stopAnimation();
+               // wheel.stopAnimation();
                 reseting = true; 
-                wheel.rotationAngle=0; 
-                wheel.draw();
+              //  wheel.rotationAngle=0; 
+              //  wheel.draw();
             }
 
             // Create winners list in winners page
@@ -356,6 +356,8 @@
     
             // Test: disparador de evento de ruleta
             $('#ruleta-simulador').click( function (e) {
+                wheel.rotationAngle=0; 
+                wheel.draw();
                 reseting = false;
                 if (current_raffle <= total_raffles) {
                     //$('#winners').removeClass('invisible');
@@ -382,6 +384,10 @@
             $('#repeat_round').click(function (e){
                 $('#round-winner').modal('hide');
                 resetWhellPosition();
+                if (confirm("¿Desea eliminarlo de la lista?")) {
+                // Remover el ganador de la lista de participantes
+                participants.splice(ticket, 1);
+                }
             });
     
             $('#save_round_winner').click(function (e){
@@ -394,7 +400,8 @@
             $('#winnersButton').click(function (e){
                 playConfigurationSound();
             });
-    
+            
+            
             function saveWinner() {
                 // Agregar el registro ganador a la lista de ganadores
                 winner.push({'ticket': ticket, 'identification': participants[ticket].identification, 'name': participants[ticket].name});
@@ -403,7 +410,15 @@
                 participants.splice(ticket, 1);
                 current_raffle++;
             }
-    
+
+            //funcion para esperar en milisegundos
+            function sleep(milliseconds) {
+                const date = Date.now();
+                let currentDate = null;
+                do {
+                currentDate = Date.now();
+                } while (currentDate - date < milliseconds);
+            }
             /**
              * Returns a random integer between min (inclusive) and max (inclusive).
              * The value is no lower than min (or the next integer greater than min
